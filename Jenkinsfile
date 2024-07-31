@@ -8,23 +8,30 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install'  // Adjust the build command as per your project's requirements
+                sh 'mvn clean install'  // Adjust if your build command is different
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    def app = docker.build("bookstorejenkinspipeline:latest")
+                    // Build the Docker image with a tag 'bookstorejenkinspipeline:latest'
+                    docker.build("bookstorejenkinspipeline:latest")
                 }
             }
         }
         stage('Deploy to Docker') {
             steps {
-                sh '''
-                docker stop bookstore_container || true
-                docker rm bookstore_container || true
-                docker run -d --name bookstore_container -p 8080:8080 bookstorejenkinspipeline:latest
-                '''
+                script {
+                    // Stop and remove any existing container
+                    sh '''
+                    docker stop bookstore_container || true
+                    docker rm bookstore_container || true
+                    '''
+                    // Run a new container from the image
+                    sh '''
+                    docker run -d --name bookstore_container -p 8080:8080 bookstorejenkinspipeline:latest
+                    '''
+                }
             }
         }
     }
