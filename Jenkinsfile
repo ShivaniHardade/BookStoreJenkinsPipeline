@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install'  // Adjust if your build command is different
+                bat 'mvn clean install'  // Use 'bat' for Windows batch commands
             }
         }
         stage('Build Docker Image') {
@@ -23,12 +23,12 @@ pipeline {
             steps {
                 script {
                     // Stop and remove any existing container
-                    sh '''
-                    docker stop bookstore_container || true
-                    docker rm bookstore_container || true
+                    bat '''
+                    docker stop bookstore_container || echo "No container to stop"
+                    docker rm bookstore_container || echo "No container to remove"
                     '''
                     // Run a new container from the image
-                    sh '''
+                    bat '''
                     docker run -d --name bookstore_container -p 8080:8080 bookstorejenkinspipeline:latest
                     '''
                 }
