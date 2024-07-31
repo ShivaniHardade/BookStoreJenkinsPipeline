@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/your-repo-url.git', branch: 'main'
+                git url: 'https://github.com/ShivaniHardade/BookStoreJenkinsPipeline.git', branch: 'master'
             }
         }
         stage('Build') {
