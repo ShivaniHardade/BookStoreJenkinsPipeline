@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/ShivaniHardade/BookStoreJenkinsPipeline.git', branch: 'master'
+                git branch: 'master', url: 'https://github.com/ShivaniHardade/BookStoreJenkinsPipeline.git'
             }
         }
         stage('Build') {
@@ -14,16 +14,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def app = docker.build("your-image-name:latest")
+                    def app = docker.build("bookstorejenkinspipeline:latest")
                 }
             }
         }
         stage('Deploy to Docker') {
             steps {
                 sh '''
-                docker stop your-container-name || true
-                docker rm your-container-name || true
-                docker run -d --name your-container-name -p 8080:8080 your-image-name:latest
+                docker stop bookstore_container || true
+                docker rm bookstore_container || true
+                docker run -d --name bookstore_container -p 8080:8080 bookstorejenkinspipeline:latest
                 '''
             }
         }
