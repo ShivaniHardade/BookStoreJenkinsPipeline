@@ -14,7 +14,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("bookstorejenkinspipeline:latest")
+                    try {
+                        docker.build("bookstorejenkinspipeline:latest", "--no-cache .")
+                    } catch (Exception e) {
+                        echo "Docker build failed: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
             }
         }
