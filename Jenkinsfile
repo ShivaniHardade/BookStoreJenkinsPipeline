@@ -11,17 +11,14 @@ pipeline {
                 bat 'mvn clean install'
             }
         }
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-        //             try {
-        //                 docker.build("bookstorejenkinspipeline:latest", "--no-cache .")
-        //             } catch (Exception e) {
-        //                 echo "Docker build failed: ${e.getMessage()}"
-        //                 currentBuild.result = 'FAILURE'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to Tomcat') {
+            steps {
+                script {
+                    def tomcatUrl = 'http://localhost:8081/manager/text'
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: tomcatUrl, path: '/bookstore')],
+                           war: '**/onlinebookstore.war'
+                }
+            }
+        }
     }
 }
