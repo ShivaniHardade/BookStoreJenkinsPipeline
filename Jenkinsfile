@@ -11,14 +11,13 @@ pipeline {
                 bat 'mvn clean install'
             }
         }
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
         stage('Deploy to Tomcat') {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: 'http://localhost:8081')], contextPath: '/bookstore', war: '**/onlinebookstore.war'
+                script {
+                    def tomcatUrl = 'http://localhost:8081/manager/text'
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: tomcatUrl, path: '/bookstore')],
+                           war: '**/onlinebookstore.war'
+                }
             }
         }
     }
