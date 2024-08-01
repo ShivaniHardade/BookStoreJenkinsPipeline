@@ -16,19 +16,10 @@ pipeline {
                 bat 'mvn test'
             }
         }
-        /*
-        stage('Build Docker Image') {
+        stage('Deploy to Tomcat') {
             steps {
-                script {
-                    try {
-                        docker.build("bookstorejenkinspipeline:latest", "--no-cache .")
-                    } catch (Exception e) {
-                        echo "Docker build failed: ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://localhost:8080')], contextPath: '/bookstore', war: 'target/onlinebookstore.war'
             }
         }
-        */
     }
 }
