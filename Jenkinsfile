@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     def tomcatUrl = 'http://localhost:8081/manager/text'
-                    deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: tomcatUrl, path: '/bookstore')],
+                    deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: tomcatUrl, path: '/onlinebookstore')],
                            war: '**/onlinebookstore.war'
                 }
             }
