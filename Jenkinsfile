@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.image("${DOCKER_IMAGE}").run('-d -p 8080:8080')
+                        docker.image("${DOCKER_IMAGE}").run('-d -p 8081:8080')
                     } catch (Exception e) {
                         echo "Docker run failed: ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
