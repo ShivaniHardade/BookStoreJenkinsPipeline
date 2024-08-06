@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_IMAGE = "bookstorejenkinspipeline:latest"
+    }
     stages {
         stage('Clone Repository') {
             steps {
@@ -11,12 +14,11 @@ pipeline {
                 bat 'mvn clean install'
             }
         }
-        /* 
         stage('Build Docker Image') {
             steps {
                 script {
                     try {
-                        docker.build("bookstorejenkinspipeline:latest", "--no-cache .")
+                        docker.build("${DOCKER_IMAGE}", "--no-cache .")
                     } catch (Exception e) {
                         echo "Docker build failed: ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
@@ -24,6 +26,17 @@ pipeline {
                 }
             }
         }
-        */
+        stage('Deploy Application') {
+            steps {
+                script {
+                    try {
+                        docker.image("${DOCKER_IMAGE}").run('-d -p 8080:8080')
+                    } catch (Exception e) {
+                        echo "Docker run failed: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
     }
 }
