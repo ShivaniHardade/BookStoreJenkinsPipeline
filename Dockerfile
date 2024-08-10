@@ -9,3 +9,5 @@ COPY onlinebookstore.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose port 8080
 EXPOSE 8080
+
+# Tomcat will start automatically
