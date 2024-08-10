@@ -1,16 +1,11 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:11-jre-slim
-WORKDIR /app
+# Use an official Tomcat image as a parent image
+FROM tomcat:9.0-jdk11
 
-# Set environment variables
-ENV APP_ENV=production
-ENV APP_DEBUG=false
+# Remove the default web application
+RUN rm -rf /usr/local/tomcat/webapps/ROOT
 
-# Copy the webapp-runner.jar and the WAR file from the build context
-COPY onlinebookstore.war /app/onlinebookstore.war
+# Copy the WAR file to Tomcat's webapps directory
+COPY onlinebookstore.war /usr/local/tomcat/webapps/ROOT.war
 
-# Expose port 8080 to the outside world
+# Expose port 8080
 EXPOSE 8080
-
-# Run the application
-CMD ["java", "-jar",  "onlinebookstore.war"]
