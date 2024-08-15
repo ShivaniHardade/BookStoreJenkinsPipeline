@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3.6.3' // The name you provided in the configuration
+    }
     environment {
         DOCKER_IMAGE = "bookstorejenkinspipeline:latest"
     }
