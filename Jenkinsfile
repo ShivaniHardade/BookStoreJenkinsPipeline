@@ -4,7 +4,7 @@ pipeline {
         maven 'Maven 3.6.3' // The name you provided in the configuration
     }
     environment {
-        DOCKER_IMAGE = "bookstorejenkinspipeline:latest"
+        DOCKER_IMAGE = "bookstore:latest"
     }
     stages {
         stage('Clone Repository') {
