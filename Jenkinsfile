@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'mvn clean install'
+                sh 'mvn clean install' // Ensure Maven is installed on the Jenkins node
             }
         }
         stage('Build Docker Image') {
@@ -37,6 +37,16 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        failure {
+            echo 'The build failed.'
+            // Additional failure handling can be added here
+        }
+        success {
+            echo 'The build succeeded.'
+            // Additional success handling can be added here
         }
     }
 }
