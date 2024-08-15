@@ -29,27 +29,15 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Application') {
-            steps {
-                script {
-                    try {
-                        sh "docker run -d -p 8081:8080 ${DOCKER_IMAGE}"
-                    } catch (Exception e) {
-                        echo "Docker run failed: ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
-            }
-        }
     }
     post {
         failure {
             echo 'The build failed.'
-            // Additional failure handling can be added here
+            
         }
         success {
             echo 'The build succeeded.'
-            // Additional success handling can be added here
+            
         }
     }
 }
