@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.build("${DOCKER_IMAGE}", "--no-cache .")
+                        sh "docker build --no-cache -t ${DOCKER_IMAGE} ."
                     } catch (Exception e) {
                         echo "Docker build failed: ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.image("${DOCKER_IMAGE}").run('-d -p 8081:8080')
+                        sh "docker run -d -p 8081:8080 ${DOCKER_IMAGE}"
                     } catch (Exception e) {
                         echo "Docker run failed: ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
