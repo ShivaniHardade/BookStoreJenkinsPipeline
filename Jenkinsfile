@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     def dockerImage = 'shiv512/myusername:latest'
-                    def dockerRegistry = 'https://index.docker.io/v1/'
+                    def dockerRegistry = 'https://index.docker.io'
                     docker.withRegistry(dockerRegistry, 'docker-credentials-id') {
                         docker.image(dockerImage).push('latest')
                     }
@@ -37,6 +37,7 @@ pipeline {
                     def kubernetesDeployment = 'bookstore-deployment'
                     withKubeConfig([credentialsId: 'kubeconfig-id']) {
                         bat """
+                            kubectl apply -f bookstore-deployment.yaml
                             kubectl set image deployment/${kubernetesDeployment} bookstore=${dockerImage}
                         """
                     }
