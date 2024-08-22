@@ -34,17 +34,12 @@ pipeline {
             steps {
                 script {
                     def dockerImage = 'shiv512/myusername:latest'
-                    def kubernetesDeployment = 'bookstore-deployment'
+                    def kubernetesDeploymentFile = 'bookstore-deployment.yaml'
                     withKubeConfig([credentialsId: 'kubeconfig-id']) {
-                        try {
-                            // Update the deployment with the new Docker image
-                            bat """
-                                kubectl set image deployment/${kubernetesDeployment} bookstore=${dockerImage}
-                            """
-                        } catch (Exception e) {
-                            echo "Kubernetes deployment update failed: ${e.getMessage()}"
-                            currentBuild.result = 'FAILURE'
-                        }
+                        echo 'Updating Kubernetes deployment with new Docker image...'
+                        bat """
+                            kubectl set image -f ${kubernetesDeploymentFile} bookstore=${dockerImage}
+                        """
                     }
                 }
             }
