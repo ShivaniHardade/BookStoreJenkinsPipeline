@@ -18,4 +18,4 @@ spec:
       - name: bookstore
         image: shiv512/myusername:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 8081 
