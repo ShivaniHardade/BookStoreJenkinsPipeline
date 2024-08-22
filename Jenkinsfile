@@ -14,7 +14,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = 'bookstorejenkinspipeline:latest'
+                    def dockerImage = 'shiv512/myusername:latest'
                     docker.build(dockerImage, "--no-cache .")
                 }
             }
@@ -22,7 +22,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def dockerImage = 'bookstorejenkinspipeline:latest'
+                    def dockerImage = 'shiv512/myusername:latest'
                     def dockerRegistry = 'https://index.docker.io/v1/'
                     docker.withRegistry(dockerRegistry, 'docker-credentials-id') {
                         docker.image(dockerImage).push('latest')
@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    def dockerImage = 'bookstorejenkinspipeline:latest'
+                    def dockerImage = 'shiv512/myusername:latest'
                     def kubernetesDeployment = 'bookstore-deployment'
                     withKubeConfig([credentialsId: 'kubeconfig-id']) {
                         bat """
