@@ -30,20 +30,6 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    def dockerImage = 'shiv512/myusername:latest'
-                    def kubernetesDeploymentFile = 'bookstore-deployment.yaml'
-                    withKubeConfig([credentialsId: 'kubeconfig-id']) {
-                        echo 'Updating Kubernetes deployment with new Docker image...'
-                        bat """
-                            kubectl set image -f ${kubernetesDeploymentFile} bookstore=${dockerImage}
-                        """
-                    }
-                }
-            }
-        }
     }
     post {
         failure {
