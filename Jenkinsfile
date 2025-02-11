@@ -8,35 +8,20 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'mvn clean install'
+                sh 'mvn clean install'
             }
         }
-        stage('Build Docker Image') {
+        stage('Deploy') {
             steps {
-                script {
-                    def dockerImage = 'shiv512/myusername:latest'
-                    docker.build(dockerImage, "--no-cache .")
-                }
+                // Stop the Tomcat server
+                sh './scripts/stop_server.sh'
+
+                // Copy the WAR file to the Tomcat webapps directory
+                sh 'cp target/onlinebookstore.war /path/to/tomcat/webapps/'
+
+                // Start the Tomcat server
+                sh './scripts/start_server.sh'
             }
-        }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    def dockerImage = 'shiv512/myusername:latest'
-                    def dockerRegistry = 'https://index.docker.io'
-                    docker.withRegistry(dockerRegistry, 'docker-credentials-id') {
-                        docker.image(dockerImage).push('latest')
-                    }
-                }
-            }
-        }
-    }
-    post {
-        failure {
-            echo 'The build failed.'
-        }
-        success {
-            echo 'The build succeeded.'
         }
     }
 }
