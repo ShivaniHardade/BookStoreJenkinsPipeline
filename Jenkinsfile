@@ -17,7 +17,7 @@ pipeline {
                 sh './scripts/stop_server.sh'
 
                 // Copy the WAR file to the Tomcat webapps directory
-                sh 'cp target/onlinebookstore.war /path/to/tomcat/webapps/'
+                sh 'cp ~/onlinebookstore.war /path/to/tomcat/webapps/'
 
                 // Start the Tomcat server
                 sh './scripts/start_server.sh'
